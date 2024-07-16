@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math
 from generate_datasets import Generate, DATA_TYPE
 import plot_datasets
 import create_clusters
@@ -33,9 +34,10 @@ def check_difference(type: DATA_TYPE, algorithm: int, gen: Generate):
         create_clusters.dta_Cluster.kmeans(gen,type,np.size(unique))
     elif algorithm==1:
         create_clusters.dta_Cluster.ward(gen,type,np.size(unique))
-    elif algorithm==2:
-        create_clusters.dta_Cluster.dbscan(gen,type,np.size(unique))
     elif algorithm==3:
+        eps=1
+        gen=dbscan_cluster_to_eps(gen=gen,type=type,clusters=np.size(unique),current_eps=eps,current_step=eps)
+    elif algorithm==2:
         create_clusters.dta_Cluster.gaussian_mixture(gen,type,np.size(unique))
     score=np.zeros(np.size(unique))
     y_new= gen.get_dataset(type=type)[1]
@@ -50,15 +52,30 @@ def check_difference(type: DATA_TYPE, algorithm: int, gen: Generate):
     
     print((100*np.sum(final_score)/np.size(y)),"percent were correct for set ",type," and function ",algorithm)
     print("The correct maximum cluster size was " , np.max(frequenzy_base), " and the algorithm got " , np.max(np.unique(y_new,return_counts=True)[1]))
+    return np.sum(final_score)/np.size(y)
 
+
+def dbscan_cluster_to_eps(gen: Generate, type:DATA_TYPE,clusters: int, current_eps: float, current_step: float):
+    create_clusters.dta_Cluster.dbscan(gen=gen,type=type,eps=current_eps)
+    current_clusters=np.size(np.unique(gen.get_dataset(type=type)[1]))
+    if int(math.log10(current_eps))%100==0 and current_eps<0.01:
+        print(current_clusters, current_eps, current_step)
+    if current_clusters==clusters:
+        return gen
+    elif current_clusters<clusters:
+        return dbscan_cluster_to_eps(gen=gen, type=type, clusters=clusters, current_eps=(current_eps-current_step/2), current_step=current_step/2)
+    elif current_clusters>clusters:
+        return dbscan_cluster_to_eps(gen=gen, type=type, clusters=clusters, current_eps=(current_eps+current_step/2), current_step=current_step/2)
 
 # main:
 ctype = CLUSTER_ALGORITHM.GAUSSIAN_MIXTURE # Cluster-Algorithmus, dessen Cluster geplottet werden
 runtime = Runtime(4, 4, 0.3, 4)
-std_datasets(plot=True, ctype=ctype, runtime=runtime)
-print(" 0 : KMEANS, 1 : WARD, 2 : DBSCAN, 3 : GAUSSIAN_MIXTURE")
-for x in DATA_TYPE:
+std_datasets(plot=False, ctype=ctype, runtime=runtime)
+print(" 0 : KMEANS, 1 : WARD, 3 : DBSCAN, 2 : GAUSSIAN_MIXTURE")
+options=np.zeros((4,4))
+for idx,x in enumerate(DATA_TYPE):
     print(x)
     for i in range(4):
-        check_difference(type=x,algorithm=i,gen=Generate(1000,0.5,0.05,0.05,1000))
-
+        if x != DATA_TYPE.LEAVES or i!=3:
+            options[idx][i]=100*check_difference(type=x,algorithm=i,gen=Generate(1000,0.5,0.05,0.05,1000))
+print(options)
