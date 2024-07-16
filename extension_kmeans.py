@@ -6,7 +6,7 @@ class Kmeans:
     def __init__(self, n_clusters=3, max_iterations=300, epsilon=1e-4):
         self.n_clusters = n_clusters
         self.max_iterations = max_iterations
-        self.epsilon = epsilon
+        self.epsilon = epsilon # "Konvergenz"-Tolerenz
 
     def fit(self, X):
 
@@ -15,7 +15,7 @@ class Kmeans:
 
         for i in range(self.max_iterations):
             # Labels setzen
-            self.labels = self.assign_labels(X)
+            self.labels = self.set_labels(X)
             # Neue Mittelpunkte bestimmen
             new_centers = self.compute_centers(X)
 
@@ -24,7 +24,7 @@ class Kmeans:
                 break
             self.centers = new_centers
 
-    def assign_labels(self, X):
+    def set_labels(self, X):
         # eukl. Norm für die Abstände
         distances = np.linalg.norm(X[:, np.newaxis] - self.centers, axis=2)
         # kleinsten Abstand zurückgeben
@@ -42,12 +42,11 @@ class Kmeans:
 
     def predict(self, X):
         # Clusterlabel für jeden Datenpunkt
-        return self.assign_labels(X)
+        return self.set_labels(X)
 
-# Beispiel-Datensätze erstellen
+# kmeans auf Datensatz anweden
 X, y = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
 
-# k-Means Algorithmus anwenden
 kmeans = Kmeans(n_clusters=4)
 kmeans.fit(X)
 y = kmeans.predict(X)
