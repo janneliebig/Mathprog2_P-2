@@ -6,6 +6,12 @@ import plot_datasets
 import create_clusters
 from runtime import Runtime, CLUSTER_ALGORITHM
 
+
+# implemented by Nils Jakobs and Janne Liebig
+"""
+    Plots all datasets unscaled. Then it plots datasets scaled and clustered with algorithm ctype.
+    Messures runtime and prints table.
+"""
 def std_datasets(plot : bool, ctype : CLUSTER_ALGORITHM, runtime: Runtime):
     gen = Generate(n_samples=1000, factor=0.5, m_noise=0.05, c_noise=0.05, random_state=1000)
     
@@ -26,7 +32,7 @@ def std_datasets(plot : bool, ctype : CLUSTER_ALGORITHM, runtime: Runtime):
 
     if plot: plot_datasets.plot_std_datasets(gen_plot)
 
-
+# implemented by Nils Jakobs
 def check_difference(type: DATA_TYPE, algorithm: int, gen: Generate):
     y= gen.get_dataset(type=type)[1]
     unique, frequenzy_base=np.unique(Generate.get_dataset(gen, type=type)[1], return_counts=True)
@@ -54,7 +60,7 @@ def check_difference(type: DATA_TYPE, algorithm: int, gen: Generate):
     print("The correct maximum cluster size was " , np.max(frequenzy_base), " and the algorithm got " , np.max(np.unique(y_new,return_counts=True)[1]))
     return np.sum(final_score)/np.size(y)
 
-
+# implemented by Nils Jakobs
 def dbscan_cluster_to_eps(gen: Generate, type:DATA_TYPE,clusters: int, current_eps: float, current_step: float):
     create_clusters.dta_Cluster.dbscan(gen=gen,type=type,eps=current_eps)
     current_clusters=np.size(np.unique(gen.get_dataset(type=type)[1]))
@@ -68,6 +74,7 @@ def dbscan_cluster_to_eps(gen: Generate, type:DATA_TYPE,clusters: int, current_e
         return dbscan_cluster_to_eps(gen=gen, type=type, clusters=clusters, current_eps=(current_eps+current_step/2), current_step=current_step/2)
 
 # main:
+# implemented by Nils Jakobs and Janne Liebig
 ctype = CLUSTER_ALGORITHM.GAUSSIAN_MIXTURE # Cluster-Algorithmus, dessen Cluster geplottet werden
 runtime = Runtime(4, 4, 0.3, 4)
 std_datasets(plot=False, ctype=ctype, runtime=runtime)

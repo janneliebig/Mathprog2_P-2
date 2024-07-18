@@ -10,12 +10,17 @@ class CLUSTER_ALGORITHM(Enum):
     GAUSSIAN_MIXTURE = 3
 
 class Runtime:
+    # implemented by Janne Liebig
     def __init__(self,k_means_clusters : int, ward_clusters : int, dbscan_eps : float, gauss_components : int):
         self.k_means_clusters = k_means_clusters
         self.ward_clusters = ward_clusters
         self.dbscan_eps = dbscan_eps
         self.gauss_components = gauss_components
 
+    # implemented by Janne Liebig
+    """
+    Returns time, algorithm ctype needs to cluster dataset dtype.
+    """
     def messure(self, gen : Generate, dtype : DATA_TYPE, ctype : CLUSTER_ALGORITHM) -> float:
         start = time.time()
         if ctype == CLUSTER_ALGORITHM.KMEANS:

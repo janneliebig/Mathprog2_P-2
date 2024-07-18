@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 from generate_datasets import Generate, DATA_TYPE
 
+# implemented by Nils Jakobs and Janne Liebig
+"""
+Plots all four datasets from gen.
+"""
 def plot_std_datasets(gen: Generate):
     fig, axs = plt.subplots(2,2)
     fig.tight_layout(h_pad=2)

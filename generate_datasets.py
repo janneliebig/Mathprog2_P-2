@@ -51,21 +51,25 @@ class Generate:
             y=np.append(y,y_all[idx])
         return X,y
 
+    # implemented by Janne Liebig
     def circles(self, n_samples : int, factor : float, noise : float) -> list:
         X,y = datasets.make_circles(n_samples=n_samples, factor=factor, noise=noise)
         return X,y
 
+    # implemented by Janne Liebig
     def moons(self, n_samples : int, noise : float) -> list:
         X,y = datasets.make_moons(n_samples=n_samples, noise=noise)
         return X,y
 
+    # implemented by Janne Liebig
     def blobs(self, n_samples : int, random_state : int) -> list:
         X,y = datasets.make_blobs(n_samples=n_samples, random_state=random_state)
-        # // transform data
+        # transform data
         transformation_matrix = np.array([[0.8, -0.5],[-0.2, 0.6]])
         X = np.dot(X, transformation_matrix)
         return X,y
     
+    # implemented by Janne Liebig
     def get_dataset(self, type : DATA_TYPE):
         if type == DATA_TYPE.CIRCLES:
             return [self.circlesX, self.circlesY]
@@ -77,7 +81,8 @@ class Generate:
             return [self.leavesX, self.leavesY]
         else:
             raise Exception("No such dataset type: "+type)
-        
+    
+    # implemented by Janne Liebig
     def set_y(self, type : DATA_TYPE, y):
         if type == DATA_TYPE.CIRCLES:
             self.circlesY = y
@@ -90,6 +95,7 @@ class Generate:
         else:
             raise Exception("No such dataset type: " )
         
+    # implemented by Janne Liebig
     def scale_datasets(self):
         self.circlesX, self.circlesY = Scaler.scale(self, DATA_TYPE.CIRCLES)
         self.moonsX, self.moonsY = Scaler.scale(self, DATA_TYPE.MOONS)
@@ -98,6 +104,7 @@ class Generate:
         self.is_scaled = True
     
 class Scaler:
+    # implemented by Janne Liebig
     def scale(gen:Generate, type:DATA_TYPE):
         X,y = gen.get_dataset(type)
         scaler = StandardScaler().fit(X)
