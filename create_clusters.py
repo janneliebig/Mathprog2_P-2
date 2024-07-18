@@ -2,6 +2,9 @@ from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 from sklearn.mixture import GaussianMixture
 from generate_datasets import Generate, DATA_TYPE
 
+"""
+Includes functions kmeans, ward, dbscan and gaussian_mixture to cluster a dataset from DATA_TYPE 'type'.
+"""
 class dta_Cluster:
     # implemented by Janne Liebig
     def circles(gen: Generate):

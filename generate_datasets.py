@@ -29,7 +29,10 @@ class DATA_TYPE(Enum):
     MOONS = 1
     BLOBS = 2
     LEAVES = 3
-
+"""
+Methods to generate datasets circles, moons and blobs. Has a getter-function to get a dataset and a setter-function 
+to set the labels of a specific dataset. Includes a method to scale every dataset.
+"""
 class Generate:
     def __init__(self, n_samples, factor, c_noise, m_noise, random_state):
         self.circlesX, self.circlesY = self.circles(n_samples=n_samples, factor=factor, noise=c_noise)
@@ -38,6 +41,7 @@ class Generate:
         self.leavesX, self.leavesY = self.leaves(n_samples=n_samples)
         self.is_scaled : bool = False
 
+    # implemented by Nils Jakobs
     def leaves(self, n_samples):           
         X_all,y_all = scan.ScanFiles()
         size=np.shape(X_all)[0]

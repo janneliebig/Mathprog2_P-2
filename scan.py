@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+
+# implemented by Nils Jakobs
 def ScanFiles():
     df=pd.read_csv('datasets_clustering/data_Mar_64.csv', index_col='Art')
     arr_Mar=df.to_numpy()

@@ -73,16 +73,18 @@ def dbscan_cluster_to_eps(gen: Generate, type:DATA_TYPE,clusters: int, current_e
     elif current_clusters>clusters:
         return dbscan_cluster_to_eps(gen=gen, type=type, clusters=clusters, current_eps=(current_eps+current_step/2), current_step=current_step/2)
 
+
 # main:
 # implemented by Nils Jakobs and Janne Liebig
 ctype = CLUSTER_ALGORITHM.GAUSSIAN_MIXTURE # Cluster-Algorithmus, dessen Cluster geplottet werden
-runtime = Runtime(4, 4, 0.3, 4)
-std_datasets(plot=False, ctype=ctype, runtime=runtime)
-print(" 0 : KMEANS, 1 : WARD, 3 : DBSCAN, 2 : GAUSSIAN_MIXTURE")
+runtime = Runtime(2, 2, 0.3, 2)
+std_datasets(plot=True, ctype=ctype, runtime=runtime)
+print(" 0 : KMEANS, 1 : WARD, 2 : GAUSSIAN_MIXTURE, 3 : DBSCAN")
 options=np.zeros((4,4))
+gen = Generate(1000,0.5,0.05,0.05,1000)
 for idx,x in enumerate(DATA_TYPE):
     print(x)
     for i in range(4):
         if x != DATA_TYPE.LEAVES or i!=3:
-            options[idx][i]=100*check_difference(type=x,algorithm=i,gen=Generate(1000,0.5,0.05,0.05,1000))
+            options[idx][i]=100*check_difference(type=x,algorithm=i,gen=gen)
 print(options)

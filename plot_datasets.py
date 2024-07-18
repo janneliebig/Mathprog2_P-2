@@ -13,6 +13,7 @@ def plot_std_datasets(gen: Generate):
     X_2, y_2 = Generate.get_dataset(gen, DATA_TYPE.MOONS)
     X_3, y_3 = Generate.get_dataset(gen, DATA_TYPE.BLOBS)
     X_4, y_4 = Generate.get_dataset(gen, DATA_TYPE.LEAVES)
+    
     axs[0,0].set_title("Circles")
     axs[0,0].scatter(X_1[:, 0], X_1[:, 1], marker="o", c=y_1, s=40, edgecolor="k")
 
